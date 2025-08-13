@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: meu-conversor-ofx
+    env: python
+    buildCommand: "pip install -r functions/requirements.txt"
+    startCommand: "gunicorn --chdir functions main:app"
+    plan: free

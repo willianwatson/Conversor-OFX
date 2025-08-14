@@ -466,6 +466,10 @@
                         <option value="sicoob_2">Sicoob 2</option>
                         <option value="inter">Inter</option>
                     </select>
+                    <div id="imagePreviewWrapper" style="display: none; margin-top: 16px; text-align: center;">
+                        <p class="form-label" style="margin-bottom: 8px;">Modelo do extrato:</p>
+                        <img id="bancoPreview" src="" alt="Exemplo de extrato" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--glass-border);">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -522,6 +526,10 @@
         const errorMessage = document.getElementById('errorMessage');
         const modalClose = document.getElementById('modalClose');
         const modalCloseButton = document.getElementById('modalCloseButton');
+        const bancoSelect = document.getElementById('banco');
+        const imagePreviewWrapper = document.getElementById('imagePreviewWrapper');
+        const bancoPreview = document.getElementById('bancoPreview');
+
 
         // Drag and Drop functionality
         fileUploadArea.addEventListener('dragover', (e) => {
@@ -583,6 +591,19 @@
             loadingSpinner.style.display = 'none';
             submitButton.disabled = false;
         }
+
+        // --- Lógica para mostrar a imagem de exemplo do banco ---
+        bancoSelect.addEventListener('change', function(event) {
+            const selectedBank = event.target.value;
+            
+            if (selectedBank) {
+                // Assume que as imagens são .png, ajuste se for outro formato
+                bancoPreview.src = `images/${selectedBank}.png`;
+                imagePreviewWrapper.style.display = 'block';
+            } else {
+                imagePreviewWrapper.style.display = 'none';
+            }
+        });
 
         // Form submission handler
         uploadForm.addEventListener('submit', function(event) {

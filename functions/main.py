@@ -8,9 +8,21 @@ from flask_cors import CORS # Essencial para a comunicação entre site e funç�
 import fitz
 from unidecode import unidecode
 
+# --- CONFIGURAÇÕES DE SEGURANÇA ---
+# 1. Chave de API Secreta: Apenas requisições com esta chave serão aceitas.
+#    Troque por uma chave longa e segura de sua preferência.
+SECRET_API_KEY = "pdf-ofxnFfrTShSn3xA8mF59KcILP7CyIj602AgWwn71Z078lDH3i0XFKqykfMnYsRn8j1Jj6LjJZ7cgy0TtkSO42pqo9Il7Jb7KBaNyjrtAf0ALDOF9lgmqEOzG6tcp"
+
+# 2. Limite de Tamanho do Arquivo (em bytes)
+#    10 * 1024 * 1024 = 10 Megabytes. É um limite generoso para PDFs de extrato.
+MAX_FILE_SIZE = 10 * 1024 * 1024
+# ------------------------------------
+
+
 # Inicializa a aplicação Flask
 app = Flask(__name__)
 # Habilita o CORS para permitir que seu site chame esta função
+app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE # Aplica o limite de tamanho do arquivo
 CORS(app)
 
 def gerar_ofx_string(transacoes, info_conta):
@@ -52,6 +64,12 @@ NEWFILEUID:NONE
 # A rota /converter agora é a rota principal da nossa função
 @app.route('/', methods=['POST'])
 def converter():
+    # --- VERIFICAÇÃO DE SEGURANÇA ---
+    # Verifica se a chave de API foi enviada no cabeçalho da requisição
+    if request.headers.get('X-API-KEY') != SECRET_API_KEY:
+        return jsonify({'success': False, 'message': 'Acesso não autorizado.'}), 401 # 401 Unauthorized
+    # --------------------------------
+
     banco_selecionado = request.form.get('banco')
     arquivo_pdf = request.files.get('arquivo_pdf')
 

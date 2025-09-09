@@ -101,3 +101,6 @@ def converter():
         return jsonify({'success': False, 'message': f"Erro: O parser para o banco '{banco_selecionado}' não foi encontrado."}), 500
     except Exception as e:
         return jsonify({'success': False, 'message': f"Ocorreu um erro inesperado: {e}"}), 500
+    
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)

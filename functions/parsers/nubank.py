@@ -1,6 +1,5 @@
 # Nome do arquivo: functions/nubank.py
-# Módulo especialista em analisar extratos do Nubank.
-# (VERSÃO 8 - FINALÍSSIMA)
+# ARQUIVO DE TESTE PARA NOVAS PALAVRAS-CHAVE
 
 import re
 import sys
@@ -31,10 +30,13 @@ def parse(texto_completo):
     
     data_atual_str = None
     
+    # ### CORREÇÃO AQUI ###
+    # Adicionamos a nova palavra-chave encontrada no extrato.
     transaction_keywords = [
         'Transferência recebida', 'Transferência enviada', 'Compra no débito', 
         'Pagamento de fatura', 'Aplicação RDB', 'Transferência Recebida', 
-        'Depósito recebido'
+        'Depósito recebido',
+        'Pagamento de boleto efetuado' # <-- NOVA LINHA ADICIONADA
     ]
 
     i = 0
@@ -81,8 +83,6 @@ def parse(texto_completo):
             texto_bloco = " ".join(bloco_linhas)
             valor_regex = re.compile(r'(\d{1,3}(?:\.\d{3})*,\d{2})')
             
-            # ### CORREÇÃO DE OURO AQUI ###
-            # A busca agora é feita no 'texto_bloco' da transação, e não no PDF inteiro.
             valores_encontrados = valor_regex.findall(texto_bloco)
             
             if valores_encontrados:
@@ -90,7 +90,7 @@ def parse(texto_completo):
                 descricao_final = texto_bloco.replace(valor_encontrado_str, "")
                 valor_encontrado = float(valor_encontrado_str.replace('.', '').replace(',', '.'))
 
-                debit_keywords = ['Transferência enviada', 'Compra no débito', 'Pagamento de fatura', 'Aplicação RDB']
+                debit_keywords = ['Transferência enviada', 'Compra no débito', 'Pagamento de fatura', 'Aplicação RDB', 'Pagamento de boleto efetuado']
                 is_debit = any(texto_bloco.startswith(kw) for kw in debit_keywords)
 
                 if is_debit:
@@ -117,7 +117,7 @@ def parse(texto_completo):
 # --- Bloco de Debug para Teste Local ---
 if __name__ == "__main__":
     import sys
-    import fitz # PyMuPDF
+    import fitz
     
     if len(sys.argv) < 2:
         print("Uso: python functions/nubank.py <caminho_do_pdf>")

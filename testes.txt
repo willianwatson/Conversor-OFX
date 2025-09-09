@@ -1,0 +1,26 @@
+Para realizar testes locais:
+Mude o index.html:
+     substitua essa linha const CONVERTER_URL = 'https://conversorofx.onrender.com';
+     por esta const CONVERTER_URL = 'http://127.0.0.1:5000';
+
+Rode dois terminais:
+     na pasta raiz do projeto rode o server: python functions/main.py
+     Acesse a pasta public: cd public
+     rode o server: python -m http.server
+
+Pode acessar o endereço localhost:8000
+
+Lembre de trocar as linhas do index.html quando terminar os testes;
+
+Para atualizar o site online:
+    Abra o terminal na pasta raiz e rode os comandos:
+      git add .
+      git commit -m "Versão final do parser Nubank e reestrutura para pasta parsers"
+      git push origin master
+    
+    Abra o render, acesse o projeto, clique em Manual Deploy e clique em 'Deploy lastest commit' e aguarde.
+
+    No terminal da pasta raiz rode: 
+     firebase deploy --only hosting
+
+Pronto. Faça os testes online

@@ -24,3 +24,6 @@ Para atualizar o site online:
      firebase deploy --only hosting
 
 Pronto. Faça os testes online
+
+
+ativar venv: venv\Scripts\activate

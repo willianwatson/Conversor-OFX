@@ -50,6 +50,12 @@ def parse(texto_completo):
                 doc_str = bloco[1]
                 historico_str = bloco[2]
                 valor_completo_str = bloco[3]
+
+                # ### AJUSTE PRECISO AQUI ###
+                # Adicionamos uma verificação para pular o bloco se o histórico for "SALDO DIA"
+                if "SALDO DIA" in historico_str.upper():
+                    i += 5 # Pula as 5 linhas deste bloco de saldo
+                    continue
                 
                 # Valida se a linha de valor tem o formato esperado (ex: "1.234,56 C")
                 if re.match(value_pattern, valor_completo_str):
